@@ -7,8 +7,8 @@ using UnityEngine;
 
 namespace DreadZitoEngine.Runtime.FlowCanvas
 {
-    [Category("Room502")]
-    public class DPGetObjectID : CallableFunctionNode<GameObject, ObjectID_HolderSO, bool>
+    [Category("DreadZitoEngine")]
+    public class GetObjectID : CallableFunctionNode<GameObject, ObjectID_HolderSO, bool>
     {
         public override GameObject Invoke(ObjectID_HolderSO target, bool isPlayer)
         {

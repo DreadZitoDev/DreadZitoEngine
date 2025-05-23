@@ -6,8 +6,8 @@ using ParadoxNotion.Design;
 
 namespace DreadZitoEngine.Runtime.FlowCanvas
 {
-    [Category("Room502")]
-    public class DPAddQuestNode : CallableActionNode<List<QuestBase>>
+    [Category("DreadZitoEngine")]
+    public class AddQuestNode : CallableActionNode<List<QuestBase>>
     {
         public override void Invoke(List<QuestBase> quests)
         {

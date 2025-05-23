@@ -4,9 +4,9 @@ using ParadoxNotion.Design;
 
 namespace DreadZitoEngine.Runtime.FlowCanvas
 {
-    public class DPQuickSaveNode : CallableActionNode
+    [Category("DreadZitoEngine")]
+    public class QuickSaveNode : CallableActionNode
     {
-        [Category("Room502/Save System/Quick Save")]
         public override void Invoke()
         {
             var saveSystem = Game.Instance.SaveSystem;

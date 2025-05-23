@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace DreadZitoEngine.Runtime.FlowCanvas
 {
-    [Category("Room502")]
-    public class DPMoveCharacter : LatentActionNode<GameObject, Transform, float>
+    [Category("DreadZitoEngine")]
+    public class MoveCharacter : LatentActionNode<GameObject, Transform, float>
     {
         public override IEnumerator Invoke(GameObject character, Transform target, float speed)
         {

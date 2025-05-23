@@ -5,8 +5,8 @@ using ParadoxNotion.Design;
 
 namespace DreadZitoEngine.Runtime.FlowCanvas
 {
-    [Category("Room502")]
-    public class DPLoadSceneControl : FlowControlNode
+    [Category("DreadZitoEngine")]
+    public class LoadSceneControl : FlowControlNode
     {
         protected override void RegisterPorts()
         {

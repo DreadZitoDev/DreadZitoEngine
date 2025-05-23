@@ -5,8 +5,8 @@ using FlowCanvas.Nodes;
 
 namespace DreadZitoEngine.Runtime.FlowCanvas
 {
-    [Category("Room502")]
-    public class DPCameraFade : FlowControlNode
+    [Category("DreadZitoEngine")]
+    public class CameraFade : FlowControlNode
     {
         protected override void RegisterPorts()
         {

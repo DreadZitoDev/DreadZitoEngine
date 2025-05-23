@@ -5,8 +5,8 @@ using ParadoxNotion.Design;
 
 namespace DreadZitoEngine.Runtime.FlowCanvas
 {
-    [Category("Room502")]
-    public class DPPlayCutsceneNode : CallableActionNode<CutsceneData>
+    [Category("DreadZitoEngine")]
+    public class PlayCutsceneNode : CallableActionNode<CutsceneData>
     {
         public override void Invoke(CutsceneData cutscene)
         {
