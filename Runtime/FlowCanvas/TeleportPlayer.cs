@@ -8,9 +8,9 @@ using UnityEngine;
 namespace DreadZitoEngine.Runtime.FlowCanvas
 {
     [Category("DreadZitoEngine")]
-    public class TeleportPlayer : CallableActionNode<ObjectID_HolderSO>
+    public class TeleportPlayer : CallableActionNode<ObjectID>
     {
-        public override void Invoke(ObjectID_HolderSO target)
+        public override void Invoke(ObjectID target)
         {
             if (target == null)
             {

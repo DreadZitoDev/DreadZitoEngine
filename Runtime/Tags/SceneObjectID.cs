@@ -11,7 +11,7 @@ namespace DreadZitoEngine.Runtime.Tags
         [SerializeField, Tooltip("If is not set, this GameObject will be returned")]
         private GameObject sceneObject;
 
-        [SerializeField] private ObjectID_HolderSO idHolder;
+        [SerializeField] private ObjectID idHolder;
         [SerializeField] private string id;
         
         // If idHolder is set, ID will be taken from it
@@ -82,7 +82,7 @@ namespace DreadZitoEngine.Runtime.Tags
             {
                 UnityEditor.EditorGUILayout.PropertyField(idHolder);
                 if (idHolder.objectReferenceValue != null)
-                    UnityEditor.EditorGUILayout.LabelField("ID in asset scope", ((ObjectID_HolderSO)idHolder.objectReferenceValue).ID);
+                    UnityEditor.EditorGUILayout.LabelField("ID in asset scope", ((ObjectID)idHolder.objectReferenceValue).ID);
             }
             
             // write back serialized values to the real instance

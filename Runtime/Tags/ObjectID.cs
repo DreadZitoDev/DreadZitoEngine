@@ -1,5 +1,4 @@
 ﻿using System;
-using _Room502.Scripts;
 using UnityEngine;
 
 namespace DreadZitoEngine.Runtime.Tags
@@ -7,8 +6,8 @@ namespace DreadZitoEngine.Runtime.Tags
     /// <summary>
     /// This class is used to reference a particular ID between assets scope and scenes
     /// </summary>
-    [CreateAssetMenu(fileName = "ObjectID_Holder", menuName = "DownfallProject/ObjectID_Holder", order = 0)]
-    public class ObjectID_HolderSO : ScriptableObject
+    [CreateAssetMenu(fileName = "ObjectID", menuName = "DownfallProject/ObjectID", order = 0)]
+    public class ObjectID : ScriptableObject
     {
         public string ID;
         
@@ -37,14 +36,14 @@ namespace DreadZitoEngine.Runtime.Tags
     }
     
     #if UNITY_EDITOR
-    [UnityEditor.CustomEditor(typeof(ObjectID_HolderSO))]
+    [UnityEditor.CustomEditor(typeof(ObjectID))]
     public class ObjectID_HolderSOEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
 
-            var objId = (ObjectID_HolderSO) target;
+            var objId = (ObjectID) target;
             if (GUILayout.Button("Refresh ID"))
             {
                 objId.RefreshID();

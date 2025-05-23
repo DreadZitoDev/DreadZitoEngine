@@ -19,7 +19,7 @@ namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem.Interactions
         [SerializeField] private ItemDataSO itemData;
         
         [SerializeField, Tooltip("Disable scene model after pick up item, leave as null if any is required")]
-        private ObjectID_HolderSO disableModelID;
+        private ObjectID disableModelID;
 
         [SerializeField] private GameObject disableModel;
         

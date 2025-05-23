@@ -1,7 +1,6 @@
-using DreadZitoEngine.Runtime.Tags;
 using UnityEngine;
 
-namespace DreadZitoEngine.Runtime
+namespace DreadZitoEngine.Runtime.Tags
 {
     public enum MarkerTiming
     {
@@ -17,7 +16,7 @@ namespace DreadZitoEngine.Runtime
         
         [Header("Marker Settings")]
         [SerializeField] private MarkerTiming markerTiming = MarkerTiming.None;
-        [SerializeField] private ObjectID_HolderSO objectID;
+        [SerializeField] private ObjectID objectID;
         [SerializeField] private Transform target;
 
         private void Awake()

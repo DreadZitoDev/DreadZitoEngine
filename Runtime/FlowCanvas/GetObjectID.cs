@@ -8,9 +8,9 @@ using UnityEngine;
 namespace DreadZitoEngine.Runtime.FlowCanvas
 {
     [Category("DreadZitoEngine")]
-    public class GetObjectID : CallableFunctionNode<GameObject, ObjectID_HolderSO, bool>
+    public class GetObjectID : CallableFunctionNode<GameObject, ObjectID, bool>
     {
-        public override GameObject Invoke(ObjectID_HolderSO target, bool isPlayer)
+        public override GameObject Invoke(ObjectID target, bool isPlayer)
         {
             if (isPlayer)
             {

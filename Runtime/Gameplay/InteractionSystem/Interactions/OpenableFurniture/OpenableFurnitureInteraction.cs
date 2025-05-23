@@ -7,7 +7,7 @@ namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem.Interactions.Openab
 {
     public abstract class OpenableFurnitureInteraction : HotspotInteractionBase
     {
-        [SerializeField, Tooltip("If no transform set, look this")] protected ObjectID_HolderSO furnitureID;
+        [SerializeField, Tooltip("If no transform set, look this")] protected ObjectID furnitureID;
         [SerializeField] protected Transform furnitureTransform;
         [SerializeField] private bool startOpen = false;
         [SerializeField] protected float openDuration = 1f;

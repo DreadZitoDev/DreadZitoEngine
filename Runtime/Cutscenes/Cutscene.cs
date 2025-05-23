@@ -15,7 +15,7 @@ namespace DreadZitoEngine.Runtime.Cutscenes
     [Serializable]
     public class BindingData
     {
-        public ObjectID_HolderSO objectID;
+        public ObjectID objectID;
         public string key;
         public TrackAsset trackAsset;
     }
