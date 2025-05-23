@@ -1,8 +1,7 @@
-using System;
 using DreadZitoEngine.Runtime.Tags;
 using UnityEngine;
 
-namespace _Room502.Scripts
+namespace DreadZitoEngine.Runtime
 {
     public enum MarkerTiming
     {

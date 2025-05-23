@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace _Room502.Scripts
+namespace DreadZitoEngine.Runtime
 {
     public class MainMenu : MenuController
     {
