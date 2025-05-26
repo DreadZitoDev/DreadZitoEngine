@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 
 namespace DreadZitoEngine.Runtime.Gameplay
 {
-    public abstract class GameplayMain : MonoBehaviour
+    public class GameplayMain : MonoBehaviour
     {
         public static GameplayMain Instance { get; private set; }
 
@@ -52,14 +52,14 @@ namespace DreadZitoEngine.Runtime.Gameplay
             
             menuController ??= FindObjectOfType<PlayerMenuController>();
             
-            menuController.Init();
+            menuController?.Init();
             
             InteractionSystemHandler ??= GetComponent<InteractionSystemHandler>();
-            InteractionSystemHandler.Init(player, menuController);
+            InteractionSystemHandler?.Init(player, menuController);
 
-            menuController.ShowQuestNoteNotification();
+            menuController?.ShowQuestNoteNotification();
             
-            sfx.Init();
+            sfx?.Init();
         }
 
 

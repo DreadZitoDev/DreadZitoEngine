@@ -47,7 +47,7 @@ namespace DreadZitoEngine.Runtime.Gameplay.Players
             if (!Model)
                 Model = GetComponentInChildren<SkinnedMeshRenderer>().gameObject;
             
-            playerThirdPersonAnimator.Init();
+            playerThirdPersonAnimator?.Init();
         }
 
         private void Update()

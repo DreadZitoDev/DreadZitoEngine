@@ -5,16 +5,16 @@ namespace DreadZitoEngine.Runtime.Editor
 {
     public class CustomHierarchyMenu
     {
-        public const string PLAYER_SPAWN_PREFAB_PATH = "Assets/DreadZitoEngine/Prefabs/PlayerSpawn";
+        public const string PLAYER_START_PREFAB_PATH = "Assets/DreadZitoEngine/Prefabs/Engine/PlayerStart";
         public const string TRIGGER_PREFAB_PATH = "Assets/DreadZitoEngine/Prefabs/Engine/Trigger";
         public const string HOTSPOT_PREFAB_PATH = "Assets/DreadZitoEngine/Prefabs/InteractionSystem/Hotspot";
         public const string CUTSCENE_CONTENT_PREFAB_PATH = "Assets/DreadZitoEngine/Prefabs/CutsceneContent";
         public const string GAME_PREFAB_PATH = "Assets/DreadZitoEngine/Prefabs/GAME";
         
-        [MenuItem("GameObject/DreadZitoEngine/PlayerSpawn", false, 1)]
-        static void CreatePlayerSpawn()
+        [MenuItem("GameObject/DreadZitoEngine/PlayerStart", false, 1)]
+        static void CreatePlayerStart()
         {
-            InstantiatePrefab(PLAYER_SPAWN_PREFAB_PATH);
+            InstantiatePrefab(PLAYER_START_PREFAB_PATH);
         }
         
         [MenuItem("GameObject/DreadZitoEngine/Hotspot", false, 1)]
