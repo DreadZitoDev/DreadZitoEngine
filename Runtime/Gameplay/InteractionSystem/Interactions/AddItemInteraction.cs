@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using _Room502.Scripts;
 using DreadZitoEngine.Runtime.Inventory;
 using DreadZitoEngine.Runtime.Tags;
 using UnityEngine;

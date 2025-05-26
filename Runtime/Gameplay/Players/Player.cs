@@ -1,6 +1,6 @@
 using System;
-using _Room502.Scripts;
 using DreadZitoEngine.Runtime.Gameplay.InteractionSystem;
+using DreadZitoEngine.Runtime.Inputs;
 using DreadZitoEngine.Runtime.Inventory;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -35,7 +35,7 @@ namespace DreadZitoEngine.Runtime.Gameplay.Players
             Interactor = GetComponent<PlayerInteractor>();
             playerThirdPersonAnimator ??= GetComponentInChildren<PlayerThirdPersonAnimator>();
             
-            Interactor.Init();
+            Interactor?.Init();
         
             InputBridge.Interact.performed += InteractInput;
             InputBridge.ToggleQuestNote.performed += ToggleQuestNote;
@@ -139,14 +139,14 @@ namespace DreadZitoEngine.Runtime.Gameplay.Players
         private void SetCanMove(bool value)
         {
             //Controller.playerCanMove = value;
-            playerThirdPersonAnimator.enabled = value;
-            throw new NotImplementedException();
+            //playerThirdPersonAnimator.enabled = value;
+            //throw new NotImplementedException();
         }
 
         public void SetCanMoveCamera(bool value)
         {
             //Controller.cameraCanMove = value;
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
         
         public void SetCanInteract(bool value)

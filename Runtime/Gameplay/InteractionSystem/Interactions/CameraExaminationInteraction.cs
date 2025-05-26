@@ -1,6 +1,6 @@
 using System.Collections;
-using _Room502.Scripts;
 using DreadZitoEngine.Runtime.Gameplay.Players;
+using DreadZitoEngine.Runtime.Inputs;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Events;

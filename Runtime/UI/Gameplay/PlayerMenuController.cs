@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using _Room502.Scripts;
 using DreadZitoEngine.Runtime.Gameplay.InteractionSystem;
 using DreadZitoEngine.Runtime.Inventory;
 using DreadZitoEngine.Runtime.Memos;

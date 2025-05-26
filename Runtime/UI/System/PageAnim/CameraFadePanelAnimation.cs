@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using _Room502.Scripts;
 using UnityEngine;
 
 namespace DreadZitoEngine.Runtime.UI.System.PageAnim

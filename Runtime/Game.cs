@@ -59,11 +59,8 @@ namespace DreadZitoEngine.Runtime
                 return;
             }
 
-            CutsceneSystem = GetComponentInChildren<CutsceneSystem>();
-            QuestsSystem = GetComponentInChildren<QuestsSystem>();
-            DialogueSystemHandler = GetComponentInChildren<DialogueSystemHandler>();
-            SaveSystem = GetComponentInChildren<SaveSystem>();
-            BgMusic = GetComponentInChildren<BgMusic>();
+            InitializeParticularSystems();
+            
             SceneManager.sceneLoaded += SceneManagerLoaded;
             
             if (SceneManager.GetActiveScene().name == "_Launcher")
@@ -73,6 +70,15 @@ namespace DreadZitoEngine.Runtime
         }
 
         private Coroutine loadSceneCoroutine;
+
+        public virtual void InitializeParticularSystems()
+        {
+            CutsceneSystem = GetComponentInChildren<CutsceneSystem>();
+            QuestsSystem = GetComponentInChildren<QuestsSystem>();
+            DialogueSystemHandler = GetComponentInChildren<DialogueSystemHandler>();
+            SaveSystem = GetComponentInChildren<SaveSystem>();
+            BgMusic = GetComponentInChildren<BgMusic>();
+        }
         
         public void LoadTitleScreen()
         {
