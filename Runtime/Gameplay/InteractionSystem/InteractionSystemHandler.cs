@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using DreadZitoEngine.Runtime.Gameplay.Players;
 using DreadZitoEngine.Runtime.Inventory;
-using DreadZitoEngine.Runtime.UI.Gameplay;
 using UnityEngine;
 
 namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem
@@ -22,8 +21,6 @@ namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem
         private Player player;
 
         private HotspotInteractionBase combinationInteraction;
-        
-        private PlayerMenuController playerUIController;
 
         private Coroutine hotspotInteractionRoutine;
         
@@ -35,43 +32,11 @@ namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem
         private List<InteractionExecutionData> interactionList = new List<InteractionExecutionData>();
         public bool IsInteracting => interactionList.Count > 0;
 
-        public void Init(Player player, PlayerMenuController playerUIController)
+        public void Init(Player player)
         {
-            this.playerUIController = playerUIController;
             this.player = player;
             
             player.OnInteractInput += HotspotInteractInput;
-        }
-        
-        private void Update()
-        {
-            var currentHotspot = player.CurrentHotspot;
-
-            if (currentHotspot == null && interactionList.Count > 0)
-            {
-                playerUIController.HideHotspotName();
-                return;
-            }
-            
-            if (currentHotspot != null)
-            {
-                if (currentHotspot.IsInteracting)
-                    playerUIController.HideHotspotName();
-                else
-                    ShowHotspotNameUI(currentHotspot);
-            }
-            else if (currentHotspot == null)
-            {
-                playerUIController.HideHotspotName();
-            }
-        }
-
-        private void ShowHotspotNameUI(Hotspot hotspot)
-        {
-            if (hotspot.IsOn())
-                playerUIController.ShowHotspotName(hotspot);
-            else
-                playerUIController.HideHotspotName();
         }
 
         public void HotspotInteractInput()

@@ -9,5 +9,6 @@ namespace DreadZitoEngine.Runtime.Inputs
         public abstract InputAction ToggleQuestLog();
         public abstract InputAction ToggleInventory();
         public abstract InputAction ExamineInteractionLeave();
+        public abstract InputAction Cancel();
     }
 }

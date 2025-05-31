@@ -3,7 +3,6 @@ using DreadZitoEngine.Runtime.Feedbacks;
 using DreadZitoEngine.Runtime.Gameplay.InteractionSystem;
 using DreadZitoEngine.Runtime.Gameplay.Players;
 using DreadZitoEngine.Runtime.Scenes;
-using DreadZitoEngine.Runtime.UI.Gameplay;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -18,9 +17,7 @@ namespace DreadZitoEngine.Runtime.Gameplay
         
         private Player player;
         public Player Player => player;
-        
-        [SerializeField] private PlayerMenuController menuController;
-        public PlayerMenuController MenuController => menuController;
+
         [SerializeField] private SFX sfx;
         
         public InteractionSystemHandler InteractionSystemHandler { get; private set; }
@@ -41,7 +38,7 @@ namespace DreadZitoEngine.Runtime.Gameplay
             Initialize();
         }
 
-        private void Initialize()
+        protected virtual void Initialize()
         {
             var playerSpawn = FindObjectOfType<Tags.PlayerSpawn>();
             
@@ -49,16 +46,10 @@ namespace DreadZitoEngine.Runtime.Gameplay
             player ??= Instantiate(playerPrefab, playerSpawn.transform.position, playerSpawn.transform.rotation);
             player.Init();
             SceneManager.MoveGameObjectToScene(player.gameObject, SceneManager.GetSceneByName(gameplaySceneData.LogicSceneNames.First()));
-            
-            menuController ??= FindObjectOfType<PlayerMenuController>();
-            
-            menuController?.Init();
-            
-            InteractionSystemHandler ??= GetComponent<InteractionSystemHandler>();
-            InteractionSystemHandler?.Init(player, menuController);
 
-            menuController?.ShowQuestNoteNotification();
-            
+            InteractionSystemHandler ??= GetComponent<InteractionSystemHandler>();
+            InteractionSystemHandler?.Init(player);
+
             sfx?.Init();
         }
 
