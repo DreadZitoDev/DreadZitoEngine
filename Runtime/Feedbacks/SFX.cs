@@ -19,8 +19,8 @@ namespace DreadZitoEngine.Runtime.Feedbacks
             var gameplayMain = GameplayMain.Instance;
             var player = gameplayMain.Player;
 
-            player.Inventory.OnItemAdded += PlayItemPickup;
-            player.OnQuestNoteToggle += PlayQuestNote;
+            //player.Inventory.OnItemAdded += PlayItemPickup;
+            //player.OnQuestNoteToggle += PlayQuestNote;
             
         }
         
