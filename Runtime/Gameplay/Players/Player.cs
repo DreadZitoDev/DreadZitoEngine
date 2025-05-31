@@ -34,6 +34,7 @@ namespace DreadZitoEngine.Runtime.Gameplay.Players
         {
             Interactor = GetComponent<PlayerInteractor>();
             playerThirdPersonAnimator ??= GetComponentInChildren<PlayerThirdPersonAnimator>();
+            Inventory ??= GetComponentInChildren<InventorySystem>();
             
             Interactor?.Init();
         

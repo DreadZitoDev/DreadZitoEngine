@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 
 namespace DreadZitoEngine.Runtime.Gameplay
 {
+    [DefaultExecutionOrder(-1)]
     public class GameplayMain : MonoBehaviour
     {
         public static GameplayMain Instance { get; private set; }
