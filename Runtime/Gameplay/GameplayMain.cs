@@ -22,7 +22,10 @@ namespace DreadZitoEngine.Runtime.Gameplay
         [SerializeField] private SFX sfx;
         
         public InteractionSystemHandler InteractionSystemHandler { get; private set; }
-
+        
+        public const string CUTSCENE_MOVE_BLOCKER_ID = "cutscene";
+        public const string INTERACTION_MOVE_BLOCKER_ID = "interaction";
+        
         private void Awake()
         {
             if (Instance == null)
@@ -61,5 +64,19 @@ namespace DreadZitoEngine.Runtime.Gameplay
                 Instance = null;
             StopAllCoroutines();
         }
+        
+        public virtual void PlayerLockMovement(string interactionMoveBlockerID, bool value)
+        {
+            if (interactionMoveBlockerID == CUTSCENE_MOVE_BLOCKER_ID)
+            {
+                Player.AddMoveBlocker(interactionMoveBlockerID, 10, value);
+            }
+            else if (interactionMoveBlockerID == INTERACTION_MOVE_BLOCKER_ID)
+            {
+                Player.AddMoveBlocker(interactionMoveBlockerID, 9, value);
+            }
+            else
+                return;
+        }                                                                                                        
     }
 }

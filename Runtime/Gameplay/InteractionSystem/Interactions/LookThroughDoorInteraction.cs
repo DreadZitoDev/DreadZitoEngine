@@ -19,7 +19,7 @@ namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem.Interactions
         {
             var player = GameplayMain.Instance.Player;
             
-            player.PlayerLockMovement(Player.INTERACTION_MOVE_BLOCKER_ID, true);
+            GameplayMain.Instance.PlayerLockMovement(GameplayMain.INTERACTION_MOVE_BLOCKER_ID, true);
             player.SetCanInteract(false);
 
             OnStartLookThroughDoor?.Invoke();
@@ -39,7 +39,7 @@ namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem.Interactions
             doorVolume.weight = 0;
             yield return Game.Instance.CameraFade.FadeOutCameraRoutine();
             
-            player.PlayerLockMovement(Player.INTERACTION_MOVE_BLOCKER_ID, false);
+            GameplayMain.Instance.PlayerLockMovement(GameplayMain.INTERACTION_MOVE_BLOCKER_ID, false);
             player.SetCanInteract(true);
             
             OnEndLookThroughDoor?.Invoke();

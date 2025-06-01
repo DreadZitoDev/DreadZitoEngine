@@ -42,7 +42,7 @@ namespace DreadZitoEngine.Runtime.Cutscenes
             
             if (cutsceneData.disablePlayerMovement)
             {
-                player?.PlayerLockMovement(Player.CUTSCENE_MOVE_BLOCKER_ID, true);
+                GameplayMain.Instance?.PlayerLockMovement(GameplayMain.CUTSCENE_MOVE_BLOCKER_ID, true);
             }
 
             
@@ -95,7 +95,7 @@ namespace DreadZitoEngine.Runtime.Cutscenes
             
             if (cutsceneData.disablePlayerMovement)
             {
-                player?.RemoveMoveBlocker(Player.CUTSCENE_MOVE_BLOCKER_ID);
+                player?.RemoveMoveBlocker(GameplayMain.CUTSCENE_MOVE_BLOCKER_ID);
             }
             
             currentCutscene = null;

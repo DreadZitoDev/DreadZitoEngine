@@ -26,10 +26,6 @@ namespace DreadZitoEngine.Runtime.Gameplay.Players
         
         private PlayerMoveBlocker playerMoveBlocker = new();
 
-        public const string CUTSCENE_MOVE_BLOCKER_ID = "cutscene";
-        public const string INVENTORY_MOVE_BLOCKER_ID = "inventory";
-        public const string INTERACTION_MOVE_BLOCKER_ID = "interaction";
-        
         public void Init()
         {
             Interactor = GetComponent<PlayerInteractor>();
@@ -91,25 +87,7 @@ namespace DreadZitoEngine.Runtime.Gameplay.Players
             Model.SetActive(value);
         }
         
-        public void PlayerLockMovement(string interactionMoveBlockerID, bool value)
-        {
-            if (interactionMoveBlockerID == CUTSCENE_MOVE_BLOCKER_ID)
-            {
-                AddMoveBlocker(interactionMoveBlockerID, 10, value);
-            }
-            else if (interactionMoveBlockerID == INVENTORY_MOVE_BLOCKER_ID)
-            {
-                AddMoveBlocker(interactionMoveBlockerID, 1, value);
-            }
-            else if (interactionMoveBlockerID == INTERACTION_MOVE_BLOCKER_ID)
-            {
-                AddMoveBlocker(interactionMoveBlockerID, 9, value);
-            }
-            else
-                return;
-        }
-        
-        private void AddMoveBlocker(string sourceId, int priority, bool lockValue)
+        public void AddMoveBlocker(string sourceId, int priority, bool lockValue)
         {
             playerMoveBlocker.AddBlocker(sourceId, priority, lockValue);
         }

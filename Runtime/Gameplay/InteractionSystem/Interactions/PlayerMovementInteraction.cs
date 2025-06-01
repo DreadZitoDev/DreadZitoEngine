@@ -12,7 +12,7 @@ namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem.Interactions
         internal override IEnumerator DoInteraction(Hotspot hotspot)
         {
             var player = GameplayMain.Instance.Player;
-            player.PlayerLockMovement(Player.INTERACTION_MOVE_BLOCKER_ID, lockMovement);
+            GameplayMain.Instance.PlayerLockMovement(GameplayMain.INTERACTION_MOVE_BLOCKER_ID, lockMovement);
             
             yield return base.DoInteraction(hotspot);
         }
