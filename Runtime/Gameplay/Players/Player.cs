@@ -39,8 +39,6 @@ namespace DreadZitoEngine.Runtime.Gameplay.Players
             Interactor?.Init();
         
             InputBridge.Interact.performed += InteractInput;
-            InputBridge.ToggleQuestNote.performed += ToggleQuestNote;
-            InputBridge.ToggleInventory.performed += ToggleInventory;
             
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
@@ -71,17 +69,6 @@ namespace DreadZitoEngine.Runtime.Gameplay.Players
             Cursor.visible = value;
         }
         
-        private void ToggleInventory(InputAction.CallbackContext obj)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void ToggleQuestNote(InputAction.CallbackContext obj)
-        {
-            // ==> get the current quest note active state asking UI
-            //OnQuestNoteToggle?.Invoke();
-            throw new NotImplementedException();
-        }
 
         private void InteractInput(InputAction.CallbackContext obj)
         {
@@ -169,8 +156,6 @@ namespace DreadZitoEngine.Runtime.Gameplay.Players
         private void OnDestroy()
         {
             InputBridge.Interact.performed -= InteractInput;
-            InputBridge.ToggleQuestNote.performed -= ToggleQuestNote;
-            InputBridge.ToggleInventory.performed -= ToggleInventory;
         }
     }
     
