@@ -16,7 +16,7 @@ namespace DreadZitoEngine.Runtime.UI.System
         public Selectable FirstSelected => firstSelected;
 
         public PanelAnimation PanelAnimation => panelAnimation;
-        public bool IsVisible => canvasGroup.alpha > 0;
+        public bool IsVisible => CanvasGroup.alpha > 0;
         
         public bool ExitOnNewPanelEnter = true;
 
@@ -25,22 +25,40 @@ namespace DreadZitoEngine.Runtime.UI.System
         public UnityEvent<Panel> OnExit;
         
         private CanvasGroup canvasGroup;
-        public CanvasGroup CanvasGroup => canvasGroup;
-        
+        public CanvasGroup CanvasGroup
+        {
+            get
+            {
+                Initialize();
+                return canvasGroup;
+            }
+        }
+
         public bool IsSkippable { get; protected set; } = true;
+
+        private bool initialized = false;
         
         public virtual void Awake()
         {
+            Initialize();
+        }
+
+        private void Initialize()
+        {
+            if (initialized) return;
+            
             if (!panel)
                 panel = gameObject;
             canvasGroup = GetComponent<CanvasGroup>();
             canvasGroup.alpha = 0;
             
             panelAnimation ??= GetComponent<PanelAnimation>();
+            initialized = true;
         }
 
         public virtual void Enter()
         {
+            panel.SetActive(true);
             OnEnter?.Invoke(this);
             if (panelAnimation)
             {
