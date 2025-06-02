@@ -58,6 +58,8 @@ namespace DreadZitoEngine.Runtime.UI.System
 
         public virtual void Enter()
         {
+            Initialize();
+            
             panel.SetActive(true);
             OnEnter?.Invoke(this);
             if (panelAnimation)
