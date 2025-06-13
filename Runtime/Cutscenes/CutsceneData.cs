@@ -1,4 +1,3 @@
-using System.Linq;
 using DreadZitoEngine.Runtime.CameraCode;
 using DreadZitoEngine.Runtime.Scenes;
 using DreadZitoTools.ScriptableLovers;
@@ -12,7 +11,7 @@ namespace DreadZitoEngine.Runtime.Cutscenes
     [ScriptableObjectPath("Assets/_DownfallProject/Resources/Data/Cutscenes")]
     public class CutsceneData : ScriptableObject
     {
-        public GameSceneData CutsceneScene;
+        public SceneReference CutsceneScene;
         public bool disablePlayerMovement = true;
         public bool hidePlayerVisibility = true;
         public bool restorePlayerVisibility = true;
@@ -24,7 +23,7 @@ namespace DreadZitoEngine.Runtime.Cutscenes
         [Tooltip("FlowScript to load after the cutscene is finished")]
         public FlowScript FlowScript;
         
-        public string CutsceneSceneName => CutsceneScene.LogicSceneNames.First();
+        public string CutsceneSceneName => CutsceneScene.SceneName;
     }
     
 #if UNITY_EDITOR
@@ -42,16 +41,10 @@ namespace DreadZitoEngine.Runtime.Cutscenes
                 {
                     var anySceneContainsCutscene = false;
                     
-                    foreach (var scene in sceneData.LogicSceneNames)
-                    {
-                        anySceneContainsCutscene = Utils.SceneContainsScript<Cutscene>(scene);
-                        if (anySceneContainsCutscene)
-                            break;
-                    }
-                    
+                    anySceneContainsCutscene = Utils.SceneContainsScript<Cutscene>(sceneData.SceneName);
                     if (!anySceneContainsCutscene)
                     {
-                        EditorGUILayout.HelpBox($"Scene {sceneData.EnvironmentName} does not contain Cutscene script", MessageType.Error);
+                        EditorGUILayout.HelpBox($"Scene {sceneData.SceneName} does not contain Cutscene script", MessageType.Error);
                     }
                 }
             }

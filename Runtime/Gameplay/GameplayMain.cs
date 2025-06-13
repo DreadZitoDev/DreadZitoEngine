@@ -13,7 +13,7 @@ namespace DreadZitoEngine.Runtime.Gameplay
     {
         public static GameplayMain Instance { get; private set; }
 
-        [SerializeField] private GameSceneData gameplaySceneData;
+        [SerializeField] private SceneReference gameplaySceneRef;
         [SerializeField] private Player playerPrefab;
         
         private Player player;
@@ -49,7 +49,7 @@ namespace DreadZitoEngine.Runtime.Gameplay
             player ??= FindObjectOfType<Player>();
             player ??= Instantiate(playerPrefab, playerSpawn.transform.position, playerSpawn.transform.rotation);
             player.Init();
-            SceneManager.MoveGameObjectToScene(player.gameObject, SceneManager.GetSceneByName(gameplaySceneData.LogicSceneNames.First()));
+            SceneManager.MoveGameObjectToScene(player.gameObject, SceneManager.GetSceneByName(gameplaySceneRef.SceneName));
 
             InteractionSystemHandler ??= GetComponent<InteractionSystemHandler>();
             InteractionSystemHandler?.Init(player);

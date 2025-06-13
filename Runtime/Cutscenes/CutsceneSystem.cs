@@ -2,6 +2,7 @@ using System;
 using DreadZitoEngine.Runtime.Gameplay;
 using DreadZitoEngine.Runtime.Gameplay.Players;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace DreadZitoEngine.Runtime.Cutscenes
 {
@@ -47,7 +48,7 @@ namespace DreadZitoEngine.Runtime.Cutscenes
 
             
             
-            Game.Instance.LoadScene(cutsceneData.CutsceneScene, fadeCamera: fadeCamera,
+            Game.Instance.LoadScene(cutsceneData.CutsceneScene, LoadSceneMode.Additive, fadeCamera: fadeCamera,
                 onLoadComplete: () =>
                 {
                     if (fadeCamera) return;
@@ -101,7 +102,7 @@ namespace DreadZitoEngine.Runtime.Cutscenes
             currentCutscene = null;
             OnCutsceneFinished?.Invoke(cutsceneData);
 
-            Game.Instance.UnLoadScene(cutsceneData.CutsceneScene, true);
+            Game.Instance.UnLoadScene(cutsceneData.CutsceneScene);
             
             if (cutsceneData.FlowScript != null)
             {

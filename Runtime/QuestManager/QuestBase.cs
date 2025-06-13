@@ -15,7 +15,7 @@ namespace DreadZitoEngine.Runtime.QuestManager
     [System.Serializable]
     public abstract class QuestBase : MonoBehaviour, ISaveable
     {
-        [SerializeField] public GameSceneData QuestScene;
+        [SerializeField] public SceneGroup QuestScene;
         [QuestPopup(true), SerializeField] public string QuestName;
 
         protected Coroutine questRoutine;

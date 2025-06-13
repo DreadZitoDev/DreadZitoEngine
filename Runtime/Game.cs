@@ -18,9 +18,9 @@ namespace DreadZitoEngine.Runtime
 { 
     public class Game : MonoBehaviour
     {
-        [SerializeField] private GameSceneData mainMenuScene;
+        [SerializeField] private SceneGroup mainMenuScene;
         [SerializeField] private FlowScript newGameFlowScript;
-        [SerializeField] private GameSceneData creditsScene;
+        [SerializeField] private SceneGroup creditsScene;
 
         public static Game Instance { get; private set; }
 
@@ -36,15 +36,15 @@ namespace DreadZitoEngine.Runtime
         public BgMusic BgMusic { get; private set; }
         
         public event Action<string> OnSceneLoaded; 
-        public event Action<string, GameSceneData> OnSceneUnloaded;
+        public event Action<string, SceneGroup> OnSceneUnloaded;
 
         [SerializeField, Tooltip("Base prefab for running FLowScripts")]
         private FlowScriptController flowScriptControllerPrefab;
 
         private Dictionary<Coroutine, FlowScriptController> RunningFlowScripts = new();
         
-        public event Action<GameSceneData> OnPrepareSwitchingEnvironment;
-        public event Action<GameSceneData> OnSwitchEnvironment;
+        public event Action<SceneGroup> OnPrepareSwitchingEnvironment;
+        public event Action<SceneGroup> OnSwitchEnvironment;
         
         private void Awake()
         {
@@ -85,11 +85,20 @@ namespace DreadZitoEngine.Runtime
             LoadScene(mainMenuScene, fadeCamera: true);
         }
         
-        public void LoadScene(GameSceneData sceneData, Action onLoadComplete = null, bool fadeCamera = false, Action onCameraFadedIn = null, Action onPreCameraFadedOut = null, FadeMethod fadeMethod = FadeMethod.OnGUI)
+        public void LoadScene(SceneGroup sceneGroup, Action onLoadComplete = null, bool fadeCamera = false, Action onCameraFadedIn = null, Action onPreCameraFadedOut = null, FadeMethod fadeMethod = FadeMethod.OnGUI)
         {
            if (loadSceneCoroutine != null)
                 StopCoroutine(loadSceneCoroutine);
-           loadSceneCoroutine = StartCoroutine(LoadScenes(sceneData.EnvironmentName, sceneData.LogicSceneNames, onLoadComplete, fadeCamera, onCameraFadedIn, onPreCameraFadedOut, fadeMethod));
+           loadSceneCoroutine = StartCoroutine(LoadScenes(sceneGroup.EnvironmentRef, sceneGroup.LogicSceneRefs, onLoadComplete, fadeCamera, onCameraFadedIn, onPreCameraFadedOut, fadeMethod));
+        }
+        
+        public void LoadScene(SceneReference sceneReference, LoadSceneMode mode, Action onLoadComplete = null, bool fadeCamera = false, Action onCameraFadedIn = null, Action onPreCameraFadedOut = null, FadeMethod fadeMethod = FadeMethod.OnGUI)
+        {
+            if (loadSceneCoroutine != null)
+                StopCoroutine(loadSceneCoroutine);
+            var environment = mode == LoadSceneMode.Single ? sceneReference.SceneName : null;
+            var logicScenes = mode == LoadSceneMode.Additive ? new[] {sceneReference.SceneName} : null;
+            loadSceneCoroutine = StartCoroutine(LoadScenes(environment, logicScenes, onLoadComplete, fadeCamera, onCameraFadedIn, onPreCameraFadedOut, fadeMethod));
         }
         
         public void LoadGameplayInEnvironment(string environment, Action onLoadComplete = null, bool fadeCamera = false)
@@ -144,6 +153,15 @@ namespace DreadZitoEngine.Runtime
             
             onLoadComplete?.Invoke();
         }
+
+        private IEnumerator LoadScenes(SceneReference environment = null, SceneReference[] logicScenes = null,
+            Action onLoadComplete = null, bool fadeCamera = false, Action onCameraFadedIn = null,
+            Action onPreCameraFadedOut = null, FadeMethod fadeMethod = FadeMethod.OnGUI)
+        {
+            var envName = environment != null ? environment.SceneName : null;
+            var logicSceneNames = logicScenes != null ? logicScenes.Select(s => s.SceneName).ToArray() : null;
+            yield return LoadScenes(envName, logicSceneNames, onLoadComplete, fadeCamera, onCameraFadedIn, onPreCameraFadedOut, fadeMethod);
+        }
         
         /// <summary>
         /// Reset all systems to their initial state, avoid having static inconsistent data
@@ -153,14 +171,14 @@ namespace DreadZitoEngine.Runtime
             QuestsSystem.Reset();
         }
 
-        public void LoadEnvironment(GameSceneData sceneData, Action onLoadComplete = null, bool fadeCamera = false)
+        public void LoadEnvironment(SceneGroup sceneGroup, Action onLoadComplete = null, bool fadeCamera = false)
         {
             if (loadSceneCoroutine != null)
                 StopCoroutine(loadSceneCoroutine);
-            loadSceneCoroutine = StartCoroutine(LoadEnvironmentRoutine(sceneData, onLoadComplete, fadeCamera));
+            loadSceneCoroutine = StartCoroutine(LoadEnvironmentRoutine(sceneGroup, onLoadComplete, fadeCamera));
         }
 
-        private IEnumerator LoadEnvironmentRoutine(GameSceneData environmentScene, Action onLoadComplete, bool fadeCamera)
+        private IEnumerator LoadEnvironmentRoutine(SceneGroup environmentScene, Action onLoadComplete, bool fadeCamera)
         {
             OnPrepareSwitchingEnvironment?.Invoke(environmentScene);
             if (fadeCamera)
@@ -171,12 +189,13 @@ namespace DreadZitoEngine.Runtime
             var currentEnvironmentScene = SceneManager.GetActiveScene();
             var currentEnvUnloadProcess = SceneManager.UnloadSceneAsync(currentEnvironmentScene);
             yield return new WaitUntil(() => currentEnvUnloadProcess.isDone);
-            
-            var nextEnvLoadProcess = SceneManager.LoadSceneAsync(environmentScene.EnvironmentName, LoadSceneMode.Additive);
+
+            var envName = environmentScene.EnvironmentRef.SceneName;
+            var nextEnvLoadProcess = SceneManager.LoadSceneAsync(envName, LoadSceneMode.Additive);
             yield return new WaitUntil(() => nextEnvLoadProcess.isDone);
             
-            SceneManager.SetActiveScene(SceneManager.GetSceneByName(environmentScene.EnvironmentName));
-            Debug.Log($"Environment loaded: {environmentScene.EnvironmentName}");
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(envName));
+            Debug.Log($"Environment loaded: {envName}");
             
             if (fadeCamera)
                 yield return CameraFade.FadeOutCameraRoutine();
@@ -191,14 +210,15 @@ namespace DreadZitoEngine.Runtime
             return sceneObject == null ? null : sceneObject.GetSceneObject();
         }
 
-        public bool IsLoaded(GameSceneData questScene)
+        public bool IsLoaded(SceneGroup questScene)
         {
-            if (!string.IsNullOrEmpty(questScene.EnvironmentName))
+            var envName = questScene.EnvironmentRef.SceneName;
+            if (!string.IsNullOrEmpty(envName))
             {
-                return SceneManager.GetSceneByName(questScene.EnvironmentName).isLoaded;
+                return SceneManager.GetSceneByName(envName).isLoaded;
             }
             
-            return questScene.LogicSceneNames.Any(sceneName => SceneManager.GetSceneByName(sceneName).isLoaded);
+            return questScene.LogicSceneRefs.Any(sceneName => SceneManager.GetSceneByName(sceneName.SceneName).isLoaded);
         }
         
         [Serializable]
@@ -253,30 +273,35 @@ namespace DreadZitoEngine.Runtime
             RunFlowScript(newGameFlowScript);
         }
 
-        public void UnLoadScene(GameSceneData sceneData, bool includeLogic = false)
+        public void UnLoadScene(SceneGroup sceneGroup)
         {
-            StartCoroutine(UnLoadSceneRoutine(sceneData, includeLogic));
+            StartCoroutine(UnLoadSceneGroup(sceneGroup));
+        }
+
+        public void UnLoadScene(SceneReference sceneReference)
+        {
+            StartCoroutine(UnLoadSceneRoutine(sceneReference.SceneName));
+        }
+
+        IEnumerator UnLoadSceneGroup(SceneGroup sceneGroup)
+        {
+            var scenesToUnLoad = new List<string> { sceneGroup.EnvironmentRef.SceneName };
+            scenesToUnLoad.AddRange(sceneGroup.LogicSceneRefs.Select(s => s.SceneName));
+
+            foreach (var scene in scenesToUnLoad)
+            {
+                yield return UnLoadSceneRoutine(scene);
+                OnSceneUnloaded?.Invoke(scene, sceneGroup);
+            }
         }
         
-        IEnumerator UnLoadSceneRoutine(GameSceneData sceneData, bool includeLogic)
+        IEnumerator UnLoadSceneRoutine(string scene, Action onComplete = null)
         {
-            var environmentScene = sceneData.EnvironmentName;
-            if (!string.IsNullOrEmpty(environmentScene))
-            {
-                var unloadProcess = SceneManager.UnloadSceneAsync(environmentScene);
-                yield return new WaitUntil(() => unloadProcess.isDone);
-                OnSceneUnloaded?.Invoke(environmentScene, sceneData);
-            }
+            if (string.IsNullOrEmpty(scene)) yield break;
             
-            if (includeLogic)
-            {
-                foreach (var logicScene in sceneData.LogicSceneNames)
-                {
-                    var unloadProcess = SceneManager.UnloadSceneAsync(logicScene);
-                    yield return new WaitUntil(() => unloadProcess.isDone);
-                    OnSceneUnloaded?.Invoke(logicScene, sceneData);
-                }
-            }
+            var unloadProcess = SceneManager.UnloadSceneAsync(scene);
+            yield return new WaitUntil(() => unloadProcess.isDone);
+            onComplete?.Invoke();
         }
         
         private void SceneManagerLoaded(Scene scene, LoadSceneMode mode)
