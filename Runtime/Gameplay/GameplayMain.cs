@@ -78,15 +78,5 @@ namespace DreadZitoEngine.Runtime.Gameplay
             else
                 return;
         }
-
-        public static T GetInstance<T>() where T : GameplayMain
-        {
-            if (Instance is T gameplayMain)
-            {
-                return gameplayMain;
-            }
-            Debug.LogError($"GameplayMain instance is not of type {typeof(T).Name}");
-            return null;
-        }
     }
 }

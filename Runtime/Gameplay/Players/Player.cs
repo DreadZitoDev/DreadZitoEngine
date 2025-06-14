@@ -77,9 +77,17 @@ namespace DreadZitoEngine.Runtime.Gameplay.Players
             transform.position = position;
         }
         
-        public void TeleportTo(Transform target)
+        public void TeleportTo(Transform target, bool copyRotation = true)
         {
-            transform.position = target.position;
+            if (copyRotation)
+            {
+                transform.position = target.position;
+                transform.rotation = target.rotation;
+            }
+            else
+            {
+                transform.position = target.position;
+            }
         }
 
         public void SetModelVisibility(bool value)

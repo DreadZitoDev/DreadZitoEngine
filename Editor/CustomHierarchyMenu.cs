@@ -8,7 +8,7 @@ namespace DreadZitoEngine.Runtime.Editor
         public const string PLAYER_START_PREFAB_PATH = "Assets/DreadZitoEngine/Prefabs/Engine/PlayerStart";
         public const string TRIGGER_PREFAB_PATH = "Assets/DreadZitoEngine/Prefabs/Engine/Trigger";
         public const string HOTSPOT_PREFAB_PATH = "Assets/DreadZitoEngine/Prefabs/InteractionSystem/Hotspot";
-        public const string CUTSCENE_CONTENT_PREFAB_PATH = "Assets/DreadZitoEngine/Prefabs/CutsceneContent";
+        public const string CUTSCENE_CONTENT_PREFAB_PATH = "Assets/DreadZitoEngine/Prefabs/Engine/CutsceneContent";
         public const string GAME_PREFAB_PATH = "Assets/DreadZitoEngine/Prefabs/GAME";
         
         [MenuItem("GameObject/DreadZitoEngine/PlayerStart", false, 1)]

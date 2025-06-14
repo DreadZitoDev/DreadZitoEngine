@@ -13,13 +13,16 @@ namespace DreadZitoEngine.Runtime.Timeline.FadeCamera
         {
             foreach (var clip in GetClips())
             {
-                var asset = clip.asset as FadeCameraStateClip;
-                if (asset)
+                var fadeClip = clip.asset as FadeCameraStateClip;
+                if (fadeClip != null)
                 {
-                    asset.template.clipDuration = (float)clip.duration;
-                    asset.template.playClip = true;
+                    var playable = (ScriptPlayable<FadeCameraStateBehaviour>)fadeClip.CreatePlayable(graph, go);
+                    var behaviour = playable.GetBehaviour();
+                    behaviour.clipDuration = (float)clip.duration;
+                    behaviour.playClip = true;
                 }
             }
+
             return ScriptPlayable<FadeCameraStateBehaviour>.Create(graph, inputCount);
         }
     }
