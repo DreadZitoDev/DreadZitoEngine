@@ -26,6 +26,12 @@ namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem
 
         private void CheckInteractables()
         {
+            mainCam ??= Camera.main;
+            if (mainCam == null)
+            {
+                Debug.LogWarning("Main camera not found. Ensure there is a camera tagged as 'MainCamera'.");
+                return;
+            }
             var origin = mainCam.transform.position;
             var direction = mainCam.transform.forward;
             var raycast = Physics.Raycast(origin, direction, out var hit, interactableDistance, interactorFilter);

@@ -6,10 +6,11 @@ namespace DreadZitoEngine.Runtime.Editor
     public class CustomHierarchyMenu
     {
         public const string PLAYER_START_PREFAB_PATH = "Assets/DreadZitoEngine/Prefabs/Engine/PlayerStart";
-        public const string TRIGGER_PREFAB_PATH = "Assets/DreadZitoEngine/Prefabs/Engine/Trigger";
+        public const string TRIGGER_PREFAB_PATH = "Assets/DreadZitoEngine/Prefabs/InteractionSystem/Trigger";
         public const string HOTSPOT_PREFAB_PATH = "Assets/DreadZitoEngine/Prefabs/InteractionSystem/Hotspot";
         public const string CUTSCENE_CONTENT_PREFAB_PATH = "Assets/DreadZitoEngine/Prefabs/Engine/CutsceneContent";
         public const string GAME_PREFAB_PATH = "Assets/DreadZitoEngine/Prefabs/GAME";
+        public const string MARKER_PREFAB_PATH = "Assets/DreadZitoEngine/Prefabs/Engine/Marker";
         
         [MenuItem("GameObject/DreadZitoEngine/PlayerStart", false, 1)]
         static void CreatePlayerStart()
@@ -41,6 +42,12 @@ namespace DreadZitoEngine.Runtime.Editor
             InstantiatePrefab(GAME_PREFAB_PATH, false);
         }
 
+        [MenuItem("GameObject/DreadZitoEngine/Marker", false, 1)]
+        static void CreateMarker()
+        {
+            InstantiatePrefab(MARKER_PREFAB_PATH, false);
+        }
+        
         static GameObject InstantiatePrefab(string prefabPath, bool autoSelect = true)
         {
             // Cargar el prefab desde la carpeta Resources
