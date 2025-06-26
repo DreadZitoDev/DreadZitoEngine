@@ -24,37 +24,78 @@ namespace DreadZitoEngine.Runtime.Cutscenes
         public FlowScript FlowScript;
         
         public string CutsceneSceneName => CutsceneScene.SceneName;
+
+        public bool IsGroupScene;
+        public SceneGroup SceneGroup;
     }
     
 #if UNITY_EDITOR
     [CustomEditor(typeof(CutsceneData))]
     public class CutscenesDataEditor : UnityEditor.Editor
     {
-        public override void OnInspectorGUI()
+       private string lastSceneName;
+    private bool sceneIsValid;
+
+    private void OnEnable()
+    {
+        ValidateCutsceneScene(); // Validación inicial al abrir el inspector
+    }
+
+    public override void OnInspectorGUI()
+    {
+        CutsceneData cutscene = (CutsceneData)target;
+
+        serializedObject.Update();
+
+        SerializedProperty isGroupSceneProp = serializedObject.FindProperty("IsGroupScene");
+        SerializedProperty sceneGroupProp = serializedObject.FindProperty("SceneGroup");
+        SerializedProperty cutsceneSceneProp = serializedObject.FindProperty("CutsceneScene");
+
+        // Detectar cambio en CutsceneScene
+        string currentSceneName = cutscene.CutsceneScene?.SceneName;
+        if (currentSceneName != lastSceneName)
         {
-            CutsceneData cutscene = (CutsceneData) target;
-            
-            var sceneData = cutscene.CutsceneScene;
-            if (sceneData != null)
-            {
-                if (!Application.isPlaying)
-                {
-                    var anySceneContainsCutscene = false;
-                    
-                    anySceneContainsCutscene = Utils.SceneContainsScript<Cutscene>(sceneData.SceneName);
-                    if (!anySceneContainsCutscene)
-                    {
-                        EditorGUILayout.HelpBox($"Scene {sceneData.SceneName} does not contain Cutscene script", MessageType.Error);
-                    }
-                }
-            }
-            
-            // Draw all other properties, ignore "m_script"
-            DrawPropertiesExcluding(serializedObject, new[] { "m_Script" });
-            
-            // Apply changes to the serializedProperty - always do this in the end of OnInspectorGUI.
-            serializedObject.ApplyModifiedProperties();
+            lastSceneName = currentSceneName;
+            ValidateCutsceneScene();
+        }
+
+        // Mostrar error si es inválida
+        if (!sceneIsValid && !Application.isPlaying && !string.IsNullOrEmpty(lastSceneName))
+        {
+            EditorGUILayout.HelpBox($"Scene {lastSceneName} does not contain Cutscene script", MessageType.Error);
+        }
+
+        // Mostrar todo menos los campos que manejamos a mano
+        DrawPropertiesExcluding(serializedObject, new[] { "m_Script", "IsGroupScene", "SceneGroup" });
+
+        // Mostrar IsGroupScene y SceneGroup con lógica de visibilidad
+        EditorGUILayout.PropertyField(isGroupSceneProp);
+        if (isGroupSceneProp.boolValue)
+        {
+            EditorGUILayout.PropertyField(sceneGroupProp);
+        }
+        else if (sceneGroupProp.objectReferenceValue != null)
+        {
+            sceneGroupProp.objectReferenceValue = null;
+        }
+
+        serializedObject.ApplyModifiedProperties();
+    }
+
+    private void ValidateCutsceneScene()
+    {
+        CutsceneData cutscene = (CutsceneData)target;
+        string sceneName = cutscene.CutsceneScene?.SceneName;
+
+        if (!string.IsNullOrEmpty(sceneName) && !Application.isPlaying)
+        {
+            sceneIsValid = Utils.SceneContainsScript<Cutscene>(sceneName);
+        }
+        else
+        {
+            sceneIsValid = true; // No escena = no error
         }
     }
+}
 #endif
 }

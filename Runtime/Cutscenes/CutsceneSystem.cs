@@ -46,26 +46,40 @@ namespace DreadZitoEngine.Runtime.Cutscenes
                 GameplayMain.Instance?.PlayerLockMovement(GameplayMain.CUTSCENE_MOVE_BLOCKER_ID, true);
             }
 
-            
-            
-            Game.Instance.LoadScene(cutsceneData.CutsceneScene, LoadSceneMode.Additive, fadeCamera: fadeCamera,
-                onLoadComplete: () =>
-                {
-                    if (fadeCamera) return;
-                    if (cutsceneData.hidePlayerVisibility)
-                        player?.SetModelVisibility(false);
+            var isGroupScene = cutsceneData.IsGroupScene;
+            Action onLoadComplete = () =>
+            {
+                if (fadeCamera) return;
+                if (cutsceneData.hidePlayerVisibility)
+                    player?.SetModelVisibility(false);
+                StartCutscene(cutsceneData);
+
+            };
+            Action onCameraFadedIn = () =>
+            {
+                if (cutsceneData.hidePlayerVisibility)
+                    player?.SetModelVisibility(false);
+            };
+            Action onPreCameraFadedOut = () =>
+            {
+                if (fadeCamera)
                     StartCutscene(cutsceneData);
-                    
-                },  onCameraFadedIn: () =>
-                {
-                    if (cutsceneData.hidePlayerVisibility)
-                        player?.SetModelVisibility(false);
-                }, 
-                onPreCameraFadedOut: () =>
-                {
-                    if (fadeCamera)
-                        StartCutscene(cutsceneData);
-                });
+            };
+
+            if (isGroupScene)
+            {
+                Game.Instance.LoadScene(cutsceneData.SceneGroup, fadeCamera: fadeCamera,
+                    onLoadComplete: onLoadComplete,
+                    onCameraFadedIn: onCameraFadedIn,
+                    onPreCameraFadedOut: onPreCameraFadedOut);
+            }
+            else
+            {
+                Game.Instance.LoadScene(cutsceneData.CutsceneScene, LoadSceneMode.Additive, fadeCamera: fadeCamera,
+                    onLoadComplete: onLoadComplete,
+                    onCameraFadedIn: onCameraFadedIn,
+                    onPreCameraFadedOut: onPreCameraFadedOut);
+            }
         }
 
         private void StartCutscene(CutsceneData cutsceneData)
