@@ -149,11 +149,6 @@ namespace DreadZitoEngine.Runtime.Inventory
         {
             return recipes.Any(recipe => recipe.Items.Contains(selectedItem.Data) && !HasItem(recipe.Result));
         }
-
-        public AudioTapeItem GetAnyAudioTape()
-        {
-            return GetItems().FirstOrDefault(item => item.Data is AudioTapeItem)?.Data as AudioTapeItem;
-        }
     }
 
     public enum CombinationState
