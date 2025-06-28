@@ -118,5 +118,12 @@ namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem
         {
             // MAY BE OVERRIDEN
         }
+
+        public virtual bool IsAvailable()
+        {
+            var inventory = GameplayMain.Instance.Player.Inventory;
+            return IsActive &&
+                   (requiredItems.Length <= 0 || inventory.HasItems(requiredItems));
+        }
     }
 }

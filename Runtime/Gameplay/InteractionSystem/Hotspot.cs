@@ -6,6 +6,10 @@ using DreadZitoEngine.Runtime.Inventory;
 using UnityEngine;
 using UnityEngine.Events;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem
 {
     public class Hotspot : MonoBehaviour
@@ -85,7 +89,8 @@ namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem
 
         public bool IsOn()
         {
-            return isOn && interactions.Any(e => e.IsActive);
+            var availableInteractions = interactions.Where(e => e.IsAvailable());
+            return isOn && availableInteractions.Any();
         }
 
         public void TurnOn()
@@ -110,61 +115,76 @@ namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem
     }
 
 #if UNITY_EDITOR
-    [UnityEditor.CustomEditor(typeof(Hotspot))]
-    public class HotspotEditor : UnityEditor.Editor
+
+[CustomEditor(typeof(Hotspot))]
+public class HotspotEditor : Editor
+{
+    private Hotspot hotspot;
+    private const string InteractionsFolderPath = "Assets/DreadZitoEngine/Prefabs/InteractionSystem/Interactions/";
+
+    private void OnEnable()
     {
-        private Hotspot hotspot;
+        hotspot = (Hotspot)target;
+    }
 
-        private void OnEnable()
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+
+        GUILayout.Space(20);
+        if (GUILayout.Button("Add Interaction"))
         {
-            hotspot = target as Hotspot;
-        }
-
-        public override void OnInspectorGUI()
-        {
-            base.OnInspectorGUI();
-
-            GUILayout.Space(20);
-            if (GUILayout.Button("Open Interactions Folder"))
-            {
-                // Opens the folder where the interactions are stored by path IN PROJECT WINDOW
-                OpenPrefabFolder();
-            }
-        }
-
-        private void OpenPrefabFolder()
-        {
-            MonoBehaviour targetComponent = target as MonoBehaviour;
-            if (targetComponent == null) return;
-
-            // Get the prefab instance root
-            GameObject prefabInstance = UnityEditor.PrefabUtility.GetOutermostPrefabInstanceRoot(targetComponent);
-
-            if (prefabInstance != null)
-            {
-                // Get the path to the prefab asset
-                string prefabPath = UnityEditor.PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(prefabInstance);
-
-                // Load the prefab asset
-                GameObject prefabAsset = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
-
-                if (prefabAsset != null)
-                {
-                    // Focus the Project window and select the prefab asset
-                    UnityEditor.EditorUtility.FocusProjectWindow();
-                    UnityEditor.Selection.activeObject = prefabAsset;
-                    UnityEditor.EditorGUIUtility.PingObject(prefabAsset);
-                }
-                else
-                {
-                    Debug.LogWarning($"Could not load prefab asset at path: {prefabPath}");
-                }
-            }
-            else
-            {
-                Debug.LogWarning("Selected object is not part of a prefab instance");
-            }
+            ShowInteractionMenu();
         }
     }
+
+    private void ShowInteractionMenu()
+    {
+        GenericMenu menu = new GenericMenu();
+
+        string[] guids = AssetDatabase.FindAssets("t:Prefab", new[] { InteractionsFolderPath });
+        if (guids.Length == 0)
+        {
+            menu.AddDisabledItem(new GUIContent("No prefabs found"));
+        }
+        else
+        {
+            foreach (string guid in guids)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guid);
+                GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+
+                if (prefab != null)
+                {
+                    string name = prefab.name;
+                    menu.AddItem(new GUIContent(name), false, () =>
+                    {
+                        AddInteractionPrefab(prefab);
+                    });
+                }
+            }
+        }
+
+        menu.ShowAsContext();
+    }
+
+    private void AddInteractionPrefab(GameObject prefab)
+    {
+        GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
+        if (instance != null)
+        {
+            Undo.RegisterCreatedObjectUndo(instance, "Add Interaction Prefab");
+            instance.transform.SetParent(hotspot.transform, false);
+            instance.name = prefab.name;
+
+            // Posicionamos en el centro del hotspot
+            instance.transform.localPosition = Vector3.zero;
+            
+            hotspot.AddInteraction(instance.GetComponent<HotspotInteractionBase>());
+
+            EditorUtility.SetDirty(hotspot);
+        }
+    }
+}
 #endif
 }
