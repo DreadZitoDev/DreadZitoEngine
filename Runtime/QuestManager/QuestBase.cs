@@ -80,8 +80,8 @@ namespace DreadZitoEngine.Runtime.QuestManager
         {
             return null;
         }
-        
-        public abstract object CaptureState();
-        public abstract void RestoreState(object state, Action onLoadComplete = null);
+
+        public virtual object CaptureState() => null;
+        public virtual void RestoreState(object state, Action onLoadComplete = null) { }
     }
 }
