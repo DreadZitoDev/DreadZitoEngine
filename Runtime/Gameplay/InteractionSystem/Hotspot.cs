@@ -33,7 +33,7 @@ namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem
         private Collider collider;
         public Collider Collider => collider ? collider : collider = GetComponent<Collider>();
 
-        internal virtual void Start()
+        protected virtual void Start()
         {
             SetInteractions(interactions);
         }
