@@ -1,7 +1,7 @@
 using DreadZitoEngine.Runtime.Gameplay.InteractionSystem.PlayerInteractors.Modes;
 using UnityEngine;
 
-namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem
+namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem.PlayerInteractors
 {
     public enum Mode
     {
@@ -11,9 +11,6 @@ namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem
     
     public class PlayerInteractor : MonoBehaviour
     {
-        [SerializeField] private LayerMask interactorFilter;
-        [SerializeField] private float interactableDistance = 2f;
-
         public Hotspot CurrentHotspot { get; private set; }
         
         [SerializeField] private Mode defaultMode = Mode.Raycast;
@@ -33,7 +30,6 @@ namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem
         
         private void Update()
         {
-            //CheckInteractables();
             CurrentHotspot = currentMode.DetectHotspot();
         }
         

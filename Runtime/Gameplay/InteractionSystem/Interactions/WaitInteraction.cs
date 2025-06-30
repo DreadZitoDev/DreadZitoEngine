@@ -8,7 +8,7 @@ namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem.Interactions
         [Space]
         [SerializeField] private float waitTime = 1f;
         
-        internal override IEnumerator DoInteraction(Hotspot hotspot)
+        protected override IEnumerator DoInteraction(Hotspot hotspot)
         {
             yield return new WaitForSeconds(waitTime);
             yield return base.DoInteraction(hotspot);

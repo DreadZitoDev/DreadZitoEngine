@@ -20,7 +20,7 @@ namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem.Interactions
             Name = string.IsNullOrEmpty(Name) ? $"Pick up {itemData.Name}" : Name;
         }
 
-        internal override IEnumerator DoInteraction(Hotspot hotspot)
+        protected override IEnumerator DoInteraction(Hotspot hotspot)
         {
             var player = GameplayMain.Instance.Player;
             player.Inventory.RemoveItem(itemData);

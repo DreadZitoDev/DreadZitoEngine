@@ -28,7 +28,7 @@ namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem.Interactions.Openab
             isLocked = locked;
         }
         
-        internal override IEnumerator DoInteraction(Hotspot hotspot)
+        protected override IEnumerator DoInteraction(Hotspot hotspot)
         {
             if (isLocked)
             {

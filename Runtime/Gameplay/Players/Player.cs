@@ -1,7 +1,9 @@
 using System;
 using DreadZitoEngine.Runtime.Gameplay.InteractionSystem;
+using DreadZitoEngine.Runtime.Gameplay.InteractionSystem.PlayerInteractors;
 using DreadZitoEngine.Runtime.Inputs;
 using DreadZitoEngine.Runtime.Inventory;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,7 +11,7 @@ namespace DreadZitoEngine.Runtime.Gameplay.Players
 {
     public abstract class Player : MonoBehaviour
     {
-        [field:SerializeField] public Transform Camera;
+        [field:SerializeField] public CinemachineCamera Camera;
         public PlayerInteractor Interactor { get; private set; }
         public Animator Animator;
 
@@ -28,7 +30,7 @@ namespace DreadZitoEngine.Runtime.Gameplay.Players
 
         public void Init()
         {
-            Interactor = GetComponent<PlayerInteractor>();
+            Interactor = GetComponentInChildren<PlayerInteractor>();
             playerThirdPersonAnimator ??= GetComponentInChildren<PlayerThirdPersonAnimator>();
             Inventory ??= GetComponentInChildren<InventorySystem>();
             
@@ -110,17 +112,19 @@ namespace DreadZitoEngine.Runtime.Gameplay.Players
             Inventory.AddItem(itemData);
         }
 
-        private void SetCanMove(bool value)
+        protected virtual void SetCanMove(bool value)
         {
-            //Controller.playerCanMove = value;
-            //playerThirdPersonAnimator.enabled = value;
-            //throw new NotImplementedException();
+            
         }
 
-        public void SetCanMoveCamera(bool value)
+        protected virtual void SetCanMoveCamera(bool value)
         {
-            //Controller.cameraCanMove = value;
-            //throw new NotImplementedException();
+            
+        }
+        
+        protected virtual void SetGravity(bool value)
+        {
+            
         }
         
         public void SetCanInteract(bool value)
@@ -132,13 +136,7 @@ namespace DreadZitoEngine.Runtime.Gameplay.Players
         public bool IsMoving => /*Controller.IsMoving*/ false;
 
         public string PrintMoveBlockers() => playerMoveBlocker.ToString();
-
-        public void SetGravity(bool value)
-        {
-            //Controller.SetGravity(value);
-            throw new NotImplementedException();
-        }
-
+        
         private void OnDestroy()
         {
             InputBridge.Interact.performed -= InteractInput;

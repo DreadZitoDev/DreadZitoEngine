@@ -7,7 +7,7 @@ namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem.Interactions
     {
         public UnityEvent OnInteractionExecuted;
         
-        internal override IEnumerator DoInteraction(Hotspot hotspot)
+        protected override IEnumerator DoInteraction(Hotspot hotspot)
         {
             OnInteractionExecuted.Invoke();
             yield break;

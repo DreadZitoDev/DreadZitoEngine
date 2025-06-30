@@ -8,7 +8,7 @@ namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem.Interactions
     {
         [SerializeField, ConversationPopup(true, false)] private string conversation;
         
-        internal override IEnumerator DoInteraction(Hotspot hotspot)
+        protected override IEnumerator DoInteraction(Hotspot hotspot)
         {
             DialogueManager.StartConversation(conversation);
 

@@ -24,7 +24,7 @@ namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem.Interactions
         [Header("Settings")]
         private bool allowExitInput = true;
         
-        internal override IEnumerator DoInteraction(Hotspot hotspot)
+        protected override IEnumerator DoInteraction(Hotspot hotspot)
         {
             var player = GameplayMain.Instance.Player;
             GameplayMain.Instance.PlayerLockMovement(GameplayMain.INTERACTION_MOVE_BLOCKER_ID, true);

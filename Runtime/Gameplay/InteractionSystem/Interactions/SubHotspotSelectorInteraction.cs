@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DreadZitoEngine.Runtime.Gameplay.InteractionSystem.PlayerInteractors;
 using DreadZitoEngine.Runtime.Inputs;
 using UnityEngine;
 
@@ -8,8 +9,8 @@ namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem.Interactions
     public class SubHotspotSelectorInteraction : HotspotInteractionBase
     {
         [SerializeField] private List<Hotspot> subHotspots = new List<Hotspot>();
-        [SerializeField] private HotspotInteractionBase triggerSelectionInteraction;
-        [SerializeField] private HotspotInteractionBase leaveInteraction;
+        [SerializeField] private HotspotInteractionBase[] triggerSelectionInteraction;
+        [SerializeField] private HotspotInteractionBase[] leaveInteraction;
         
         private List<Hotspot> runtimeSubHotspots = new List<Hotspot>();
         
@@ -19,12 +20,15 @@ namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem.Interactions
         
         PlayerInteractor playerInteractor => GameplayMain.Instance.Player.Interactor;
 
-        internal override IEnumerator DoInteraction(Hotspot hotspot)
+        protected override IEnumerator DoInteraction(Hotspot hotspot)
         {
             if (!initialized)
                 Initialize();
 
             StartInteraction();
+            
+            foreach (var interaction in triggerSelectionInteraction)
+                yield return interaction.ExecuteRoutine(hotspot);
             
             var navigationInput = InputBridge.UI.Navigate;
             var cancelInput = InputBridge.UI.Cancel;
@@ -45,8 +49,10 @@ namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem.Interactions
                     if (noMoreHotspots)
                         this.TurnOff();
                     else
-                        playerInteractor.ClearHotspot(); 
-                    yield return leaveInteraction.ExecuteRoutine(hotspot);
+                        playerInteractor.ClearHotspot();
+                    
+                    foreach (var interaction in leaveInteraction)
+                        yield return interaction.ExecuteRoutine(hotspot);
                     EndInteraction();
                     yield break;
                 }

@@ -1,5 +1,4 @@
 using System.Collections;
-using DreadZitoEngine.Runtime.Gameplay.Players;
 using UnityEngine;
 
 namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem.Interactions
@@ -9,7 +8,7 @@ namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem.Interactions
         [Header("Settings")]
         [SerializeField] private bool lockMovement = false;
         
-        internal override IEnumerator DoInteraction(Hotspot hotspot)
+        protected override IEnumerator DoInteraction(Hotspot hotspot)
         {
             var player = GameplayMain.Instance.Player;
             GameplayMain.Instance.PlayerLockMovement(GameplayMain.INTERACTION_MOVE_BLOCKER_ID, lockMovement);

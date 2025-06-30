@@ -8,7 +8,7 @@ namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem.Interactions
     {
         [SerializeField] private FlowScript flowScript;
         
-        internal override IEnumerator DoInteraction(Hotspot hotspot)
+        protected override IEnumerator DoInteraction(Hotspot hotspot)
         {
             var finished = false;
             Game.Instance.RunFlowScript(flowScript, () => finished = true);

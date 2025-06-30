@@ -20,7 +20,7 @@ namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem.Interactions
         
         private Coroutine playAudioCoroutine;
         
-        internal override IEnumerator DoInteraction(Hotspot hotspot)
+        protected override IEnumerator DoInteraction(Hotspot hotspot)
         {
             var clip = AudioSource.clip;
             if (!clip)

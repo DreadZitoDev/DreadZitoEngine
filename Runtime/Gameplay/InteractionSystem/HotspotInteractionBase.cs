@@ -74,7 +74,7 @@ namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem
             OnInteractionExecutedEvent?.Invoke();
         }
 
-        internal virtual IEnumerator DoInteraction(Hotspot hotspot)
+        protected virtual IEnumerator DoInteraction(Hotspot hotspot)
         {
             // THIS IS MEANT TO BE OVERRIDEN
             yield break;
