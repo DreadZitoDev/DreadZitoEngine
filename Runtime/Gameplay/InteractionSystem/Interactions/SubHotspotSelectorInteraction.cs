@@ -91,7 +91,24 @@ namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem.Interactions
             runtimeSubHotspots = new List<Hotspot>(subHotspots);
             
             var interactionSystem = GameplayMain.Instance.InteractionSystemHandler;
-            //interactionSystem.OnHotspotInteraction += OnHotspotInteraction;
+            interactionSystem.OnHotspotInteraction += OnHotspotInteraction;
+        }
+
+        private void OnHotspotInteraction(Hotspot hotspot, List<HotspotInteractionBase> interactions)
+        {
+            var isMyHotspot = runtimeSubHotspots.Contains(hotspot);
+            if (!isMyHotspot) return;
+            
+            runtimeSubHotspots.Remove(hotspot);
+            // adjust current index
+            if (currentIndex >= runtimeSubHotspots.Count) {
+                currentIndex = runtimeSubHotspots.Count - 1;
+                if (currentIndex < 0)
+                    currentIndex = 0;
+            }
+            // Select hotspot if there are still hotspots left
+            if (runtimeSubHotspots.Count > 0)
+                playerInteractor.SelectHotspot(runtimeSubHotspots[currentIndex]);
         }
     }
 }

@@ -209,6 +209,24 @@ namespace DreadZitoEngine.Runtime
             var sceneObject = FindObjectsOfType<SceneObjectID>(true).FirstOrDefault(e => e.ID == id);
             return sceneObject == null ? null : sceneObject.GetSceneObject();
         }
+        public static GameObject GetSceneObject(ObjectID objectID)
+        {
+            var sceneObject = FindObjectsOfType<SceneObjectID>(true).FirstOrDefault(e => e.ID == objectID.ID);
+            return sceneObject == null ? null : sceneObject.GetSceneObject();
+        }
+        
+        public static T GetSceneObject<T>(ObjectID objectID, bool includeChildren = false) where T : Component
+        {
+            var sceneObject = GetSceneObject(objectID);
+            if (sceneObject == null) return null;
+            
+            var component = sceneObject.GetComponent<T>();
+            
+            return component != null ? component : 
+                includeChildren ? 
+                sceneObject.GetComponentInChildren<T>() : 
+                null;
+        }
 
         public bool IsLoaded(SceneGroup questScene)
         {
