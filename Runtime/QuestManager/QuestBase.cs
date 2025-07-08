@@ -83,5 +83,11 @@ namespace DreadZitoEngine.Runtime.QuestManager
 
         public virtual object CaptureState() => null;
         public virtual void RestoreState(object state, Action onLoadComplete = null) { }
+
+        [ContextMenu("RunQuest")]
+        protected void RunQuestTest()
+        {
+            Game.Instance.QuestsSystem.StartQuest(this);
+        }
     }
 }

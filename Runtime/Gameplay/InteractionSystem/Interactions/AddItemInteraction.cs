@@ -4,6 +4,10 @@ using DreadZitoEngine.Runtime.Inventory;
 using DreadZitoEngine.Runtime.Tags;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem.Interactions
 {
     [Serializable]
@@ -17,10 +21,8 @@ namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem.Interactions
     {
         [SerializeField] private ItemDataSO itemData;
         
-        [SerializeField, Tooltip("Disable scene model after pick up item, leave as null if any is required")]
-        private ObjectID disableModelID;
-
         [SerializeField] private GameObject disableModel;
+        [SerializeField] private ObjectID disableModelID;
         
         private void Start()
         {
@@ -77,4 +79,43 @@ namespace DreadZitoEngine.Runtime.Gameplay.InteractionSystem.Interactions
             GetModel()?.SetActive(data.ModelEnableState);
         }
     }
+    
+#if UNITY_EDITOR
+    [CustomEditor(typeof(AddItemInteraction))]
+    public class AddItemInteractionEditor: Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            serializedObject.Update();
+            
+            var interaction = (AddItemInteraction)target;
+            SerializedProperty targetObj = serializedObject.FindProperty("disableModel");
+            SerializedProperty targetObjID = serializedObject.FindProperty("disableModelID");
+            
+            DrawPropertiesExcluding(serializedObject, "disableModel", "disableModelID");
+            
+            var animatorValue = targetObj.objectReferenceValue;
+            var animatorIDValue = targetObjID.objectReferenceValue;
+            
+            if (animatorValue == null && animatorIDValue == null)
+            {
+                EditorGUILayout.HelpBox("Disable scene model after pick up item, leave as null if any is required", MessageType.Info);
+                EditorGUILayout.PropertyField(targetObj);
+                EditorGUILayout.PropertyField(targetObjID);
+            }
+            else if (animatorValue != null)
+            {
+                EditorGUILayout.PropertyField(targetObj);
+                targetObjID.objectReferenceValue = null; // Clear animatorID if animator is set
+            }
+            else if (animatorIDValue != null)
+            {
+                EditorGUILayout.PropertyField(targetObjID);
+                targetObj.objectReferenceValue = null; // Clear animator if animatorID is set
+            }
+            
+            serializedObject.ApplyModifiedProperties();
+        }
+    }
+#endif
 }

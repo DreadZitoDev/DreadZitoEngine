@@ -19,15 +19,7 @@ namespace DreadZitoEngine.Runtime.QuestManager
         
         public void StartQuest(QuestBase quest, Action<QuestBase> onLoadQuest = null)
         {
-            if (ActiveQuests.Contains(quest)) {
-                Debug.LogError($"Quest {quest.QuestName} is already active");
-                return;
-            }
-            
-            if (!quests.Contains(quest))
-                quests.Add(quest);
-            
-            StartQuest(quest.QuestName, onLoadQuest);
+            SetupQuest(quest, onLoadQuest);
         }
         
         public void StartQuest(string questName, Action<QuestBase> onLoadQuest = null)
