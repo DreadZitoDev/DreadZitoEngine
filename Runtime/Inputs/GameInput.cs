@@ -12,5 +12,7 @@ namespace DreadZitoEngine.Runtime.Inputs
         public abstract InputAction Cancel();
         
         public abstract UIInput GetUIInput();
+
+        public abstract InputAction Combination();
     }
 }

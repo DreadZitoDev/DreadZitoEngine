@@ -19,6 +19,8 @@ namespace DreadZitoEngine.Runtime.Inputs
         public static InputAction Cancel => Input.ExamineInteractionLeave(); // Assuming Cancel is the same as ExamineInteractionLeave
 
         public static UIInput UI => Input.GetUIInput();
+        
+        public static InputAction Combination => Input.Combination();
     }
 
     public struct UIInput
