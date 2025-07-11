@@ -11,9 +11,7 @@ namespace DreadZitoEngine.Runtime.Inventory
         [field:SerializeField] public int MaxStackSize {get; private set;} = 1;
 
         [field:SerializeField] public AudioClip PickupSFX {get; private set;}
-        // [Header("Interactions")]
-        // [SerializeField] private List<HotspotInteractionBase> interactions;
-        //
-        // public HotspotInteractionBase[] Interactions => interactions.ToArray();
+        
+        // public GameObject ItemModel;
     }
 }
