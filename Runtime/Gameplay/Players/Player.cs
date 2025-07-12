@@ -61,7 +61,7 @@ namespace DreadZitoEngine.Runtime.Gameplay.Players
             #endif
         }
 
-        private void SetCursorVisibility(bool value)
+        public void SetCursorVisibility(bool value)
         {
             Cursor.lockState = value ? CursorLockMode.Confined : CursorLockMode.Locked;
             Cursor.visible = value;
@@ -117,12 +117,12 @@ namespace DreadZitoEngine.Runtime.Gameplay.Players
             
         }
 
-        protected virtual void SetCanMoveCamera(bool value)
+        public virtual void SetCanMoveCamera(bool value)
         {
             
         }
         
-        protected virtual void SetGravity(bool value)
+        public virtual void SetGravity(bool value)
         {
             
         }
