@@ -1,5 +1,6 @@
 using DreadZitoEngine.Runtime.Gameplay;
 using DreadZitoEngine.Runtime.Gameplay.Players;
+using DreadZitoEngine.Runtime.Inventory;
 using UnityEngine;
 
 namespace DreadZitoEngine.Runtime
@@ -28,6 +29,16 @@ namespace DreadZitoEngine.Runtime
         {
             if (PlayerInstance is T p) return p;
             Debug.LogError($"Player is not of type {typeof(T).Name}");
+            return null;
+        }
+
+        public static T GetItemAs<T>(ItemDataSO data) where T : ItemDataSO
+        {
+            if (data is T itemData)
+            {
+                return itemData;
+            }
+            Debug.LogError($"ItemDataSO is not of type {typeof(T).Name}");
             return null;
         }
     }
