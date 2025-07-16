@@ -38,7 +38,6 @@ namespace DreadZitoEngine.Runtime
             {
                 return itemData;
             }
-            Debug.LogError($"ItemDataSO is not of type {typeof(T).Name}");
             return null;
         }
     }
