@@ -62,15 +62,11 @@ namespace DreadZitoEngine.Runtime.Inventory
         
         public InventoryItem[] GetItems() => inventory.ToArray();
 
+        public InventoryItem GetItem(ItemDataSO item) => holdingItems.GetValueOrDefault(item);
+
         public bool HasItem(ItemDataSO item)
         {
             return holdingItems.ContainsKey(item);
-        }
-        
-        public void SelectItem(InventoryItem item)
-        {
-            if (SelectedItem == item) return;
-            SelectedItem = item;
         }
 
         public bool HasItems(ItemDataSO[] queryItems)
@@ -92,63 +88,6 @@ namespace DreadZitoEngine.Runtime.Inventory
             );
         }
         
-        public CombinationData AddToCombination(ItemDataSO item)
-        {
-            if (CombinationData == null)
-            {
-                Debug.LogWarning($"No current combination");
-                return null;
-            }
-            CombinationData.EvaluateAddItem(item);
-            var data = CombinationData.Copy();
-            
-            if (CombinationData.IsDone)
-            {
-                AddItem(CombinationData.Result);
-                // remove combined items
-                CombinationData.Items.ForEach(item =>
-                {
-                    var hasAnotherRecipe = recipes.Any(recipe => recipe.Items.Contains(item) &&
-                                                                 !HasItem(recipe.Result));
-                    if (!hasAnotherRecipe)
-                        RemoveItem(item);
-                });
-                CombinationData = null;
-            }
-            else if (CombinationData.IsContinue)
-            {
-                // Continue combination
-            }
-            else if (CombinationData.IsCancel)
-            {
-                CombinationData = null;
-            }
-
-            return data;
-        }
-
-        public CombinationData StartCombination()
-        {
-            if (SelectedItem == null) {
-                Debug.Log($"No item selected");
-                return null;
-            }
-            
-            var possibleRecipes = recipes.Where(recipe => recipe.Items.Contains(SelectedItem.Data) && !HasItem(recipe.Result)).ToArray();
-            CombinationData = possibleRecipes.Length > 0
-                ? new CombinationData()
-                {
-                    PossibleRecipes = possibleRecipes,
-                    Items = new List<ItemDataSO>() {SelectedItem.Data} // Add selected item
-                }
-                : null;
-            return CombinationData;
-        }
-
-        public bool HasCombination(InventoryItem selectedItem)
-        {
-            return recipes.Any(recipe => recipe.Items.Contains(selectedItem.Data) && !HasItem(recipe.Result));
-        }
     }
 
     public enum CombinationState
