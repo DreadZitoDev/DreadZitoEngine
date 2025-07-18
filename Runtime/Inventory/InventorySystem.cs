@@ -16,13 +16,8 @@ namespace DreadZitoEngine.Runtime.Inventory
         public event RemovedItemDelegate OnItemRemoved;
         
         public InventoryItem SelectedItem { get; private set; }
-        
-        [SerializeField] private CombinationRecipeSO[] recipes;
-        
-        public CombinationData CombinationData { get; private set; }
-        public bool IsInCombinationProcess => CombinationData != null;
 
-        public void AddItem(ItemDataSO itemData, int amount = 1)
+        public virtual void AddItem(ItemDataSO itemData, int amount = 1)
         {
             if (holdingItems.TryGetValue(itemData, out var item))
             {
@@ -42,7 +37,7 @@ namespace DreadZitoEngine.Runtime.Inventory
             OnItemAdded?.Invoke(item);
         }
         
-        public void RemoveItem(ItemDataSO itemData, int amount = 1)
+        public virtual void RemoveItem(ItemDataSO itemData, int amount = 1)
         {
             if (!holdingItems.TryGetValue(itemData, out var item)) {
                 Debug.Log($"Item {itemData.Name} not found in inventory");
@@ -88,13 +83,5 @@ namespace DreadZitoEngine.Runtime.Inventory
             );
         }
         
-    }
-
-    public enum CombinationState
-    {
-        None,
-        Continue,
-        Cancel,
-        Done
     }
 }

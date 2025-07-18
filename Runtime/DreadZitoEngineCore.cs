@@ -40,6 +40,17 @@ namespace DreadZitoEngine.Runtime
             }
             return null;
         }
+        
+        public static T GetInventoryAs<T>() where T : InventorySystem
+        {
+            var inventory = PlayerInstance?.Inventory;
+            if (inventory is T inv)
+            {
+                return inv;
+            }
+            Debug.LogError($"InventorySystem is not of type {typeof(T).Name}");
+            return null;
+        }
     }
 
 }
